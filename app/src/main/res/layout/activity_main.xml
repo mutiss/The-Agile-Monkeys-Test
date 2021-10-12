@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/fl_container"
+        android:layout_width="match_parent"
+        android:layout_below="@id/headbar"
+        android:layout_height="match_parent"></FrameLayout>
+
+    <fragment
+        android:id="@+id/playerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:name="com.carlosblaya.theagilemonkeystest.ui.main.player.FragmentPlayer"></fragment>
+
+    <include layout="@layout/headbar_main" android:id="@+id/headbar"></include>
+
+
+</RelativeLayout>
+
+
