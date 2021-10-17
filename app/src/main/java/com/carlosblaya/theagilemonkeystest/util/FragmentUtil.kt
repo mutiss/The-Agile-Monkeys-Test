@@ -19,12 +19,14 @@ object FragmentUtil {
         val fragment = activity.supportFragmentManager.findFragmentByTag(tag)
         val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
         if (fragment == null) {
-            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in,R.anim.fade_out).add(
-                R.id.fl_container, getFragmentByTag(
-                    tag,
-                    bundle
-                )!!, tag
-            ).addToBackStack(tag)
+            getFragmentByTag(
+                tag,
+                bundle
+            )?.let {
+                fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in,R.anim.fade_out).add(
+                    R.id.fl_container, it, tag
+                ).addToBackStack(tag)
+            }
         } else {
             fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out).show(fragment)
         }

@@ -25,7 +25,8 @@ class TAMApplication: Application(){
             // declare used Android context
             androidContext(this@TAMApplication)
             // declare modules
-            modules(retrofitModule, repositoryModule, serviceModule, dbModule,viewModelModule,mappersModule)
+            modules(retrofitModule,useCasesModule, repositoryModule, serviceModule, dbModule,viewModelModule,mappersModule,
+                )
         }
     }
 

@@ -40,13 +40,13 @@ class FragmentPlayer : BaseFragment<FragmentPlayerBinding, PlayerViewModel>() {
     override fun layout(): Int = R.layout.fragment_player
 
     //Streaming Audio
-    var mPlayerHolder: PlayerHolder? = null
+    lateinit var mPlayerHolder: PlayerHolder
     var mCurrentSongPlaying: Song? = null
     var binded = false
 
     //Animation
-    var pulse: Animation? = null
-    var discAnimation: ObjectAnimator? = null
+    lateinit var pulse: Animation
+    lateinit var discAnimation: ObjectAnimator
     var actualColorLayoutPlayer: Int? = Color.BLACK
 
     override fun init() {
@@ -58,10 +58,10 @@ class FragmentPlayer : BaseFragment<FragmentPlayerBinding, PlayerViewModel>() {
             binding.ivAlbum,
             "rotation", 0f, 360f
         )
-        discAnimation!!.repeatCount = ObjectAnimator.INFINITE
-        discAnimation!!.repeatMode = ObjectAnimator.RESTART
-        discAnimation!!.duration = 2000
-        discAnimation!!.interpolator = LinearInterpolator()
+        discAnimation.repeatCount = ObjectAnimator.INFINITE
+        discAnimation.repeatMode = ObjectAnimator.RESTART
+        discAnimation.duration = 2000
+        discAnimation.interpolator = LinearInterpolator()
     }
 
 
@@ -114,12 +114,12 @@ class FragmentPlayer : BaseFragment<FragmentPlayerBinding, PlayerViewModel>() {
             binded = true
             if (service is PlayerService.PlayerServiceBinder) {
                 mPlayerHolder = service.getPlayerHolderInstance()
-                mPlayerHolder!!.audioFocusPlayer.addListener(object :
+                mPlayerHolder.audioFocusPlayer.addListener(object :
                     Player.DefaultEventListener() {
                     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                         if (playWhenReady && playbackState == Player.STATE_READY) {
                             binding.equaliser.playAnimation()
-                            discAnimation!!.start()
+                            discAnimation.start()
                         } else if (playWhenReady && playbackState == Player.STATE_ENDED) {
                             stopPlayer()
                         } else if (playWhenReady && playbackState == Player.STATE_BUFFERING) {
@@ -131,7 +131,7 @@ class FragmentPlayer : BaseFragment<FragmentPlayerBinding, PlayerViewModel>() {
                         } else {
                             // player paused in any state
                             binding.equaliser.pauseAnimation()
-                            discAnimation!!.pause()
+                            discAnimation.pause()
                         }
                     }
                 })
@@ -161,7 +161,12 @@ class FragmentPlayer : BaseFragment<FragmentPlayerBinding, PlayerViewModel>() {
         positionAdapter: Int
     ) {
 
-        (requireActivity() as MainActivity).binding.flContainer.setPadding(0, 0, 0, 80.px) //Space for player view
+        (requireActivity() as MainActivity).binding.flContainer.setPadding(
+            0,
+            0,
+            0,
+            80.px
+        ) //Space for player view
 
         binding.equaliser.playAnimation()
 
@@ -169,7 +174,7 @@ class FragmentPlayer : BaseFragment<FragmentPlayerBinding, PlayerViewModel>() {
 
         changeBackgroundColorPlayerView(song)
 
-        discAnimation!!.start()
+        discAnimation.start()
 
         binding.tvNameArtist.text = song.artistName
         binding.tvNameSong.text = song.trackName
@@ -249,17 +254,21 @@ class FragmentPlayer : BaseFragment<FragmentPlayerBinding, PlayerViewModel>() {
      * Stop player view and animations, and unbind connection
      */
     fun stopPlayer() {
-        if (mPlayerHolder != null) {
-            (requireActivity() as MainActivity).binding.flContainer.setPadding(0, 0, 0, 0) // Removing space given for player view
-            binding.equaliser.cancelAnimation()
-            discAnimation!!.cancel()
-            mPlayerHolder?.audioFocusPlayer!!.playWhenReady = false
-            binding.llPlayer.slideToBottom()
-            binding.llPlayer.gone()
-            mCurrentSongPlaying = null
-            if (binded)
-                doUnbind()
-        }
+        (requireActivity() as MainActivity).binding.flContainer.setPadding(
+            0,
+            0,
+            0,
+            0
+        ) // Removing space given for player view
+        binding.equaliser.cancelAnimation()
+        discAnimation.cancel()
+        mPlayerHolder.audioFocusPlayer.playWhenReady = false
+        binding.llPlayer.slideToBottom()
+        binding.llPlayer.gone()
+        mCurrentSongPlaying = null
+        if (binded)
+            doUnbind()
+
     }
 
     fun checkIfAudioIsRunning() {
@@ -271,7 +280,7 @@ class FragmentPlayer : BaseFragment<FragmentPlayerBinding, PlayerViewModel>() {
     fun setSameStatusPlayerViewAsAdapterLiked(song: Song) {
         if (binding.llPlayer.isVisible) {
             if (mCurrentSongPlaying != null) {
-                if (mCurrentSongPlaying!!.trackId == song.trackId) {
+                if (mCurrentSongPlaying?.trackId == song.trackId) {
                     if (song.isLiked) {
                         song.isLiked = true
                         setAppearenceLiked()

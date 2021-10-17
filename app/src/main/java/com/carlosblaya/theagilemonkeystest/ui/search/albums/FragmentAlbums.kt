@@ -32,7 +32,9 @@ class FragmentAlbums : BaseFragment<FragmentArtistAlbumsBinding, AlbumsViewModel
     }
 
     private fun initView() {
+        viewModel.idArtist = requireArguments().getLong(Artist.KEY_ARTIST_ID) // ViewModel idArtist is always the same
         mArtistNameSelected = requireArguments().getString(Artist.KEY_ARTIST_NAME).toString()
+
         (requireActivity() as MainActivity).setTitleHeadbar(mArtistNameSelected)
         (requireActivity() as MainActivity).getTitleHeader().slideToRight()
         (requireActivity() as MainActivity).getImageBack().fadeIn()
@@ -54,7 +56,7 @@ class FragmentAlbums : BaseFragment<FragmentArtistAlbumsBinding, AlbumsViewModel
      */
     private fun getAlbumsFromArtistObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getArtistAlbums(requireArguments().getLong(Artist.KEY_ARTIST_ID)).observe(
+            viewModel.getArtistAlbums().observe(
                 viewLifecycleOwner,
                 {
                     when (it.status) {

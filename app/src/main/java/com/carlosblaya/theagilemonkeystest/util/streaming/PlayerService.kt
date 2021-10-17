@@ -73,9 +73,9 @@ class PlayerService : IntentService("tamplayerservice"), PlayerNotificationManag
 
     override fun onBind(intent: Intent?): IBinder {
 
-        mTitle = intent!!.getStringExtra("title").toString()
-        mImage = intent.getStringExtra("image").toString()
-        mPreviewUrl = intent.getStringExtra("previewUrl").toString()
+        mTitle = intent?.getStringExtra("title").toString()
+        mImage = intent?.getStringExtra("image").toString()
+        mPreviewUrl = intent?.getStringExtra("previewUrl").toString()
 
         playerNotificationManager = PlayerModule.getPlayerNotificationManager(this, mTitle, mImage).also {
             it.setNotificationListener(this)

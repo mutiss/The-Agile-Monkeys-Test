@@ -46,7 +46,7 @@ class VideoActivity : AppCompatActivity() {
 
             videoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector)
 
-            val videouri = Uri.parse(intent.extras!!.getString(Song.KEY_PREVIEW_URL))
+            val videouri = Uri.parse(intent.extras?.getString(Song.KEY_PREVIEW_URL))
 
             val dataSourceFactory = DefaultHttpDataSourceFactory("exoplayer_video")
 
@@ -56,7 +56,7 @@ class VideoActivity : AppCompatActivity() {
 
             binding.videoPlayerView.player = videoPlayer
 
-            (binding.videoPlayerView.player as SimpleExoPlayer?)!!.prepare(mediaSource)
+            (binding.videoPlayerView.player as SimpleExoPlayer?)?.prepare(mediaSource)
             binding.videoPlayerView.player.playWhenReady = true
         } catch (e: Exception) {
             Timber.e("Error : $e")
@@ -64,12 +64,12 @@ class VideoActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        videoPlayer!!.stop()
+        videoPlayer?.stop()
         finish()
     }
 
     override fun onDestroy() {
-        videoPlayer!!.stop()
+        videoPlayer?.stop()
         super.onDestroy()
     }
 

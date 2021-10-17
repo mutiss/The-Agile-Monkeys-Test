@@ -16,6 +16,8 @@ import com.carlosblaya.theagilemonkeystest.domain.repository.AlbumListRepository
 import com.carlosblaya.theagilemonkeystest.domain.repository.ArtistListRepository
 import com.carlosblaya.theagilemonkeystest.domain.repository.ArtistRepositoryImpl
 import com.carlosblaya.theagilemonkeystest.domain.repository.SongListRepository
+import com.carlosblaya.theagilemonkeystest.domain.usecases.GetAlbumsUseCase
+import com.carlosblaya.theagilemonkeystest.domain.usecases.GetSongsUseCase
 import com.carlosblaya.theagilemonkeystest.ui.main.MainViewModel
 import com.carlosblaya.theagilemonkeystest.ui.main.player.PlayerViewModel
 import com.carlosblaya.theagilemonkeystest.ui.search.albums.AlbumsViewModel
@@ -46,6 +48,11 @@ val repositoryModule: Module = module {
         SongListRepository(get(), provideResponseHandler())
     }
 
+}
+
+val useCasesModule: Module = module {
+    single {GetAlbumsUseCase (get())}
+    single {GetSongsUseCase (get())}
 }
 
 val mappersModule = module {

@@ -8,11 +8,12 @@ import com.carlosblaya.theagilemonkeystest.data.response.mapper.SongListMapper
 import com.carlosblaya.theagilemonkeystest.ui.base.BaseViewModel
 import com.carlosblaya.theagilemonkeystest.domain.model.Song
 import com.carlosblaya.theagilemonkeystest.domain.repository.SongListRepository
+import com.carlosblaya.theagilemonkeystest.domain.usecases.GetSongsUseCase
 import com.carlosblaya.theagilemonkeystest.util.Resource
 import kotlinx.coroutines.Dispatchers
 
 class SongsViewModel(
-    private val songsRepository: SongListRepository,
+    private val songsUseCase: GetSongsUseCase,
     private val database:AppDatabase,
 ) : BaseViewModel() {
 
@@ -22,7 +23,7 @@ class SongsViewModel(
 
     fun getAlbumSongs(): LiveData<Resource<SongListResponse>> = liveData(Dispatchers.IO) {
         emit(Resource.loading(null))
-        emit(songsRepository.getAlbumSongs(idAlbum))
+        emit(songsUseCase.getSongs(idAlbum))
     }
 
     fun checkIfLikeExist(idSong:Long):Boolean{
